@@ -27,6 +27,10 @@ public class Compiladores_lab2 {
     public static ArrayList<String> nte = new ArrayList<>();
     public static ArrayList<primero> primeros = new ArrayList<>();
     public static ArrayList<siguiente> siguientes = new ArrayList<>();
+    public static ArrayList<String> pila = new ArrayList<>();
+    public static ArrayList<String> entrada = new ArrayList<>();
+    public static ArrayList<String> salida = new ArrayList<>();
+    
 
     /**
      * @param args the command line arguments
@@ -175,16 +179,43 @@ public class Compiladores_lab2 {
     }
     
     public static void tablaM(){
-        String[][] tablaM;
+        String[][] tablaM = null;
+        t.add("$");
          for (int i = 0; i < p.size(); i++) {
             String[] produccion = p.get(i).replaceAll("\\s", "").split("->");
              ArrayList<String> primeroM = primeroBeta(produccion[1]);
              if(primeroM.contains("&")){
-                 
+                 ArrayList<String> siguienteM = getSiguientes(produccion[0]);
+                 int row;
+                 int colunm;
+                 for (int j = 0; j < siguienteM.size(); j++) {
+                     row = nt.indexOf(produccion[0]);
+                     colunm = t.indexOf(primeroM.get(j));
+                     tablaM[i][j] = produccion[1];
+                 }
              }else{
-                 
+                 int row;
+                 int colunm;
+                 for (int j = 0; j < primeroM.size(); j++) {
+                     row = nt.indexOf(produccion[0]);
+                     colunm = t.indexOf(primeroM.get(j));
+                     tablaM[i][j] = produccion[1];
+                 }
              }
         }
+    }
+    
+    public static void initEntrada(String cadena){
+        for (int i = 0; i < cadena.length(); i++) {
+            entrada.add(cadena.substring(i, i + 1));
+        }
+    }
+    
+    public static void comprobacion(String cadena){
+        pila.add("$");
+        pila.add(nt.get(0));
+        entrada.add(cadena);
+        entrada.add("$");
     }
     
     public static ArrayList<String> getPrimeros(String nt) {        
