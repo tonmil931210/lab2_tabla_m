@@ -120,24 +120,31 @@ public class Compiladores_lab2 {
         }
         for (int i = 0; i < temp_nte.size(); i++) {
             if (!nte.contains(temp_nte.get(i))) {
-                boolean temp = false;
+                int temp = 0;
                 for (int j = 0; j < p.size(); j++) {
                     String[] produccion = p.get(j).replaceAll("\\s", "").split("->");
                     if (temp_nte.get(i).equals(produccion[0])) {
                         for (int k = 0; k < produccion[1].length(); k++) {
                             String caracter = produccion[1].substring(k, k + 1);
-                            if (!nte.contains(caracter)) {
-                                temp = true;
+                            if (!nte.contains(caracter)) {                        
+                                temp = 1;
+                                if(temp_nte.contains(caracter)){
+                                    temp = 2;
+                                }
                                 break;
                             }
                         }
-                        if (temp) {
+                        if (temp == 1 || temp == 2) {
                             break;
                         }
                     }
                 }
-                if (!temp) {
+                if (temp == 0) {
                     nte.add(temp_nte.get(i));
+                }
+                if(temp == 0 || temp == 1){
+                    temp_nte.remove(temp_nte.get(i));
+                    i = -1;
                 }
             }
         }
@@ -169,7 +176,15 @@ public class Compiladores_lab2 {
                 if (nt.contains(p.primeros.get(j))) {
                     String nt = p.primeros.get(j);
                     ArrayList<String> temp = getPrimeros(nt);
-                    p.primeros.addAll(temp);
+                    if(temp.contains("&") &&  j < p.primeros.size() - 1){
+                        for (int k = 0; k < temp.size(); k++) {
+                            if(!temp.get(k).equals("&")){
+                                p.primeros.add(temp.get(k));
+                            }
+                        }
+                    }else{
+                        p.primeros.addAll(temp);
+                    }              
                     p.primeros = new ArrayList<String>(new LinkedHashSet<String>( p.primeros));
                     p.primeros.remove(p.primeros.get(j));  
                     p.primeros.remove(p.noTerminal);

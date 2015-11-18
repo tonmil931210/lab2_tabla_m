@@ -2,5 +2,4 @@ A->DBC
 B->b
 B->&
 C->c
-C->&
 D->BC
