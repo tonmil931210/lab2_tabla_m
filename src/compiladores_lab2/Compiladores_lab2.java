@@ -260,7 +260,8 @@ public class Compiladores_lab2 {
                     int k = getSiguienteIndex(s);
                     String beta = produccion.substring(j+1);
                     if(beta.length()>0){
-                        siguientes.get(k).siguientes.addAll(primeroBeta(beta));
+                        ArrayList<String> primeros = primeroBeta(beta);
+                        siguientes.get(k).siguientes.addAll(primeros);
                         //Eliminar los epsilons
                         siguientes.get(k).siguientes.remove("&");
                     }
@@ -276,7 +277,7 @@ public class Compiladores_lab2 {
     public static void regla3() {
         for (int i = 0; i < p.size(); i++) {
             String produccion = p.get(i).split("->")[1];
-            String nt = p.get(i).split("->")[0];
+            String nter = p.get(i).split("->")[0];
             for (int j = 0; j < produccion.length(); j++) {
                 String s = produccion.charAt(j) + "";
                 //Es no terminal?
@@ -285,10 +286,10 @@ public class Compiladores_lab2 {
                     String beta = produccion.substring(j+1);
                     if(beta.length()>0){
                         if(primeroBeta(beta).contains("&")){
-                            siguientes.get(k).siguientes.add(nt);
+                            siguientes.get(k).siguientes.add(nter);
                         }                        
                     }else{
-                        siguientes.get(k).siguientes.add(nt);
+                        siguientes.get(k).siguientes.add(nter);
                     }
                 }
             }
