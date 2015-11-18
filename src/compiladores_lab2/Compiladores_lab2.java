@@ -176,15 +176,7 @@ public class Compiladores_lab2 {
                 if (nt.contains(p.primeros.get(j))) {
                     String nt = p.primeros.get(j);
                     ArrayList<String> temp = getPrimeros(nt);
-                    if(temp.contains("&") &&  j < p.primeros.size() - 1){
-                        for (int k = 0; k < temp.size(); k++) {
-                            if(!temp.get(k).equals("&")){
-                                p.primeros.add(temp.get(k));
-                            }
-                        }
-                    }else{
-                        p.primeros.addAll(temp);
-                    }              
+                    p.primeros.addAll(temp);
                     p.primeros = new ArrayList<String>(new LinkedHashSet<String>( p.primeros));
                     p.primeros.remove(p.primeros.get(j));  
                     p.primeros.remove(p.noTerminal);
