@@ -193,7 +193,7 @@ public class Compiladores_lab2 {
     public static ArrayList<String> getPrimeros(String nt) {        
         for (int i = 0; i < primeros.size(); i++) {            
             if(primeros.get(i).noTerminal.compareTo(nt)==0){
-                return primeros.get(i).primeros;
+                return (ArrayList<String>) primeros.get(i).primeros.clone();
             }
         }
         return null;
@@ -231,7 +231,7 @@ public class Compiladores_lab2 {
     public static ArrayList<String> getSiguientes(String nt) {
         for (int i = 0; i < siguientes.size(); i++) {
             if(siguientes.get(i).noTerminal.compareTo(nt)==0){
-                return siguientes.get(i).siguientes;
+                return (ArrayList<String>) siguientes.get(i).siguientes.clone();
             }
         }
         return null;
