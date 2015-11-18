@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Milton%20Casanova/Documents/NetBeansProjects/compiladores_lab2/compiladores_lab2/src/compiladores_lab2/primero.java</file>
             <file>file:/C:/Users/Milton%20Casanova/Documents/NetBeansProjects/compiladores_lab2/compiladores_lab2/src/compiladores_lab2/siguiente.java</file>
             <file>file:/C:/Users/Milton%20Casanova/Documents/NetBeansProjects/compiladores_lab2/compiladores_lab2/src/compiladores_lab2/Compiladores_lab2.java</file>
+=======
+            <file>file:/G:/Mis%20Documentos/NetBeansProjects/lab2_tabla_m/src/compiladores_lab2/siguiente.java</file>
+            <file>file:/G:/Mis%20Documentos/NetBeansProjects/lab2_tabla_m/src/compiladores_lab2/Compiladores_lab2.java</file>
+            <file>file:/G:/Mis%20Documentos/NetBeansProjects/lab2_tabla_m/src/compiladores_lab2/primero.java</file>
+>>>>>>> f47417e6aa9508345d4263b730bb14d9ba45cc11
         </group>
     </open-files>
 </project-private>

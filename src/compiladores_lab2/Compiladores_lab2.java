@@ -36,7 +36,7 @@ public class Compiladores_lab2 {
      * @param args the command line arguments
      */
     public static void fileChooser() throws IOException {
-        JFileChooser fileIn = new JFileChooser();
+        JFileChooser fileIn = new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TXT File", "txt");
         fileIn.setFileFilter(filter);
         int returnVal = fileIn.showOpenDialog(fileIn);
@@ -167,10 +167,13 @@ public class Compiladores_lab2 {
             p.primeros.remove(p.noTerminal);
             for (int j = 0; j < p.primeros.size(); j++) {
                 if (nt.contains(p.primeros.get(j))) {
-                    p.primeros.addAll(getPrimeros(p.primeros.get(j)));
+                    String nt = p.primeros.get(j);
+                    ArrayList<String> temp = getPrimeros(nt);
+                    p.primeros.addAll(temp);
                     p.primeros = new ArrayList<String>(new LinkedHashSet<String>( p.primeros));
                     p.primeros.remove(p.primeros.get(j));  
                     p.primeros.remove(p.noTerminal);
+                    j = -1;
                 }
             }
             System.out.println(p.primeros);
@@ -209,13 +212,13 @@ public class Compiladores_lab2 {
         for (int i = 0; i < cadena.length(); i++) {
             entrada.add(cadena.substring(i, i + 1));
         }
+        entrada.add("$");
     }
     
     public static void comprobacion(String cadena){
         pila.add("$");
         pila.add(nt.get(0));
-        entrada.add(cadena);
-        entrada.add("$");
+        initEntrada(cadena);
     }
     
     public static ArrayList<String> getPrimeros(String nt) {        
@@ -246,6 +249,7 @@ public class Compiladores_lab2 {
                     siguientes.get(i).siguientes.remove(s);
                     siguientes.get(i).siguientes.addAll(getSiguientes(s));
                     siguientes.get(i).siguientes = new ArrayList<String>(new LinkedHashSet<String>(siguientes.get(i).siguientes));
+                    j=-1;
                 }
             }
         }       
