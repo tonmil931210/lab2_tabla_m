@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -25,6 +26,7 @@ public class Compiladores_lab2 {
     public static ArrayList<String> nt = new ArrayList<>();
     public static ArrayList<String> nte = new ArrayList<>();
     public static ArrayList<primero> primeros = new ArrayList<>();
+    public static ArrayList<siguiente> siguientes = new ArrayList<>();
 
     /**
      * @param args the command line arguments
@@ -111,9 +113,138 @@ public class Compiladores_lab2 {
         }
         
     }
+    
+    public static ArrayList<String> getPrimeros(String nt) {        
+        for (int i = 0; i < primeros.size(); i++) {            
+            if(primeros.get(i).noTerminal.compareTo(nt)==0){
+                return primeros.get(i).primeros;
+            }
+        }
+        return null;
+    }
+    
+    //Siguientes
+    public static void siguientes() {
+        //inicializar primeros
+        for (int i = 0; i < nt.size(); i++) {            
+            if(!siguientes.get(i).siguientes.contains(nt.get(i))){
+                siguientes.add(new siguiente(nt.get(i)));
+            }
+        }
+        //Aplicar reglas
+        regla1();
+        regla2();
+        regla3();
+        //Reemplazar
+        for (int i = 0; i < siguientes.size(); i++) {
+            siguientes.get(i).siguientes.remove(siguientes.get(i).noTerminal);
+            for (int j = 0; j < siguientes.get(i).siguientes.size(); j++) {
+                String s = siguientes.get(i).siguientes.get(j);
+                if(nt.contains(s)){
+                    siguientes.get(i).siguientes.remove(s);
+                    siguientes.get(i).siguientes.addAll(getSiguientes(s));
+                    siguientes.get(i).siguientes = new ArrayList<String>(new LinkedHashSet<String>(siguientes.get(i).siguientes));
+                }
+            }
+        }            
+    }
+    
+    public static ArrayList<String> getSiguientes(String nt) {
+        for (int i = 0; i < siguientes.size(); i++) {
+            if(siguientes.get(i).noTerminal.compareTo(nt)==0){
+                return siguientes.get(i).siguientes;
+            }
+        }
+        return null;
+    }
+    
+    public static int getSiguienteIndex(String nt) {
+        for (int i = 0; i < siguientes.size(); i++) {
+            if(siguientes.get(i).noTerminal.compareTo(nt)==0){
+                return i;
+            }
+        }
+        return -1;
+    }
+    //Regla #1
+    public static void regla1() {
+        siguientes.get(0).siguientes.add("$");
+    }
+    //REGLA #2
+    public static void regla2() {
+        for (int i = 0; i < p.size(); i++) {
+            String produccion = p.get(i).split("->")[1];
+            for (int j = 0; j < produccion.length(); j++) {
+                String s = produccion.charAt(i) + "";
+                //Es no terminal?
+                if(nt.contains(s)){
+                    int k = getSiguienteIndex(s);
+                    String beta = produccion.substring(i+1);
+                    if(beta.length()>0){
+                        siguientes.get(k).siguientes.addAll(primeroBeta(beta));
+                        //Eliminar los epsilons
+                        siguientes.get(k).siguientes.remove("&");
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < siguientes.size(); i++) {       
+            //Eliminar repetidos en cada siguiente
+            siguientes.get(i).siguientes = new ArrayList<String>(new LinkedHashSet<String>(siguientes.get(i).siguientes));            
+        }
+    }    
+    //regla #3
+    public static void regla3() {
+        for (int i = 0; i < p.size(); i++) {
+            String produccion = p.get(i).split("->")[1];
+            String nt = p.get(i).split("->")[0];
+            for (int j = 0; j < produccion.length(); j++) {
+                String s = produccion.charAt(i) + "";
+                //Es no terminal?
+                if(nt.contains(s)){
+                    int k = getSiguienteIndex(s);
+                    String beta = produccion.substring(i+1);
+                    if(beta.length()>0){
+                        if(primeroBeta(beta).contains("&")){
+                            siguientes.get(k).siguientes.add(nt);
+                        }                        
+                    }else{
+                        siguientes.get(k).siguientes.add(nt);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < siguientes.size(); i++) {       
+            //Eliminar repetidos en cada siguiente
+            siguientes.get(i).siguientes = new ArrayList<String>(new LinkedHashSet<String>(siguientes.get(i).siguientes));            
+        }
+    }
+    
+    public static ArrayList<String> primeroBeta(String beta){
+        ArrayList<String> primeros = new ArrayList<>();
+        for (int i = 0; i < beta.length(); i++) {            
+            String s = beta.charAt(i) + "";
+            //es terminal?
+            if(t.contains(s)){
+                primeros.add(s);
+                break;
+            }else if(nte.contains(s)){                
+                // es un no terminal que produce epsilon?
+                primeros.addAll(getPrimeros(s));
+            }else {
+                // es un no terminal que no produce epsilon
+                primeros.addAll(getPrimeros(s));
+                break;
+            }
+        }       
+        //Eliminar repetidos
+        primeros = new ArrayList<String>(new LinkedHashSet<String>(primeros));        
+        return primeros;
+    }    
+    
 
     public static void main(String[] args) throws IOException {
-        // TODO code application logic here
+        // TODO code application logic here                   
         fileChooser();
     }
 
